@@ -22,23 +22,27 @@ dialog.csv-importer {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90%;
-  max-width: 900px;
+  max-width: 1100px;
   max-height: 90vh;
   border: none;
   border-radius: var(--border-radius-3);
   padding: 0;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   overflow: hidden;
 
   &::backdrop {
-    background: rgba(14, 17, 22, 0.7);
+    background: rgba(14, 17, 22, 0.85);
     backdrop-filter: blur(4px);
+  }
+
+  &[open] {
+    display: block;
   }
 }
 
 div.csv-importer {
   width: 100%;
-  max-width: 900px;
+  max-width: 1100px;
   border-radius: var(--border-radius-3);
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -55,17 +59,151 @@ div.csv-importer {
   * {
     box-sizing: border-box;
   }
+
+  // Apply dark theme CSS variables
+  &.CSVImporter-dark {
+    color-scheme: dark;
+
+    --color-background: #0e1116;
+    --color-background-main: var(--color-background);
+    --color-background-modal: #171a20;
+    --color-background-modal-hover: #2e323c;
+    --color-background-modal-veil: #0e1116;
+    --color-background-modal-shadow: #0e1116;
+    --color-background-modal-shade: #1f2229;
+
+    --color-tertiary: #{$gray-900};
+    --color-tertiary-hover: #{$gray-800};
+    --color-tertiary-focus: #{$gray-800};
+    --color-tertiary-disabled: #{$gray-200};
+
+    --color-background-menu: #{$gray-900};
+    --color-background-menu-hover: #{$gray-800};
+
+    --color-text-strong: #{$gray-100};
+    --color-text: #{$gray-300};
+    --color-text-soft: #{$gray-500};
+
+    --color-text-on-tertiary: #{$base-white};
+    --color-text-on-tertiary-disabled: #{$gray-500};
+
+    --color-error: #{$error-800};
+    --color-text-error: #{$error-500};
+    --color-background-error: #{$error-500};
+    --color-background-error-hover: #{$error-600};
+    --color-background-error-soft: #{$error-200};
+
+    --color-input-background: #{$gray-900};
+    --color-input-background-soft: #{$gray-800};
+    --color-input-border: #{$gray-700};
+    --color-input-placeholder: #{$gray-700};
+    --color-input-text-disabled: #{$gray-700};
+    --color-input-disabled: #171a20;
+
+    --color-background-small-button-selected: #{$gray-700};
+    --color-background-small-button-hover: #{$gray-900};
+    --color-text-small-button: #{$base-white};
+
+    --color-button: #{$primary-50};
+    --color-button-hover: #{$primary-100};
+    --color-button-disabled: #{$primary-100};
+
+    --color-button-text: #171a20;
+    --color-button-text-disabled: #171a20;
+
+    --color-button-border: #{$gray-700};
+
+    --color-border: #{$gray-700};
+    --color-border-soft: #{$gray-800};
+
+    --color-icon: #{$gray-300};
+
+    --color-bisel: rgba(255, 255, 255, 0.05);
+
+    --color-csv-import-text: var(--color-text);
+
+    --color-stepper: #{$gray-cool-800};
+    --color-stepper-active: #{$success-300};
+  }
+
+  // Apply light theme CSS variables
+  &.CSVImporter-light {
+    color-scheme: light;
+
+    --color-background: #{$gray-50};
+    --color-background-main: var(--color-background);
+    --color-background-modal: #{$base-white};
+    --color-background-modal-hover: #{$gray-100};
+    --color-background-modal-veil: #{$gray-100};
+    --color-background-modal-shadow: #{$gray-200};
+    --color-background-modal-shade: #{$gray-50};
+
+    --color-tertiary: #{$gray-100};
+    --color-tertiary-hover: #{$gray-200};
+    --color-tertiary-focus: #{$gray-200};
+    --color-tertiary-disabled: #{$gray-50};
+
+    --color-background-menu: #{$base-white};
+    --color-background-menu-hover: #{$gray-100};
+
+    --color-text-strong: #{$gray-900};
+    --color-text: #{$gray-700};
+    --color-text-soft: #{$gray-500};
+
+    --color-text-on-tertiary: #{$gray-900};
+    --color-text-on-tertiary-disabled: #{$gray-400};
+
+    --color-error: #{$error-100};
+    --color-text-error: #{$error-600};
+    --color-background-error: #{$error-500};
+    --color-background-error-hover: #{$error-600};
+    --color-background-error-soft: #{$error-100};
+
+    --color-input-background: #{$base-white};
+    --color-input-background-soft: #{$gray-100};
+    --color-input-border: #{$gray-300};
+    --color-input-placeholder: #{$gray-400};
+    --color-input-text-disabled: #{$gray-400};
+    --color-input-disabled: #{$gray-100};
+
+    --color-background-small-button-selected: #{$gray-200};
+    --color-background-small-button-hover: #{$gray-100};
+    --color-text-small-button: #{$gray-900};
+
+    --color-button: #{$primary-600};
+    --color-button-hover: #{$primary-700};
+    --color-button-disabled: #{$primary-200};
+
+    --color-button-text: #{$base-white};
+    --color-button-text-disabled: #{$gray-500};
+
+    --color-button-border: #{$gray-300};
+
+    --color-border: #{$gray-200};
+    --color-border-soft: #{$gray-100};
+
+    --color-icon: #{$gray-500};
+
+    --color-bisel: rgba(0, 0, 0, 0.05);
+
+    --color-csv-import-text: var(--color-text);
+
+    --color-stepper: #{$gray-200};
+    --color-stepper-active: #{$success-500};
+  }
 }
 
 .wrapper {
   position: relative;
   display: flex;
   flex-direction: column;
-  min-height: 400px;
+  min-height: 500px;
+  max-height: 80vh;
 }
 
 .stepper-container {
   border-bottom: 1px solid var(--color-border);
+  padding: var(--m-xs) 0;
 }
 
 .content {
@@ -106,4 +244,3 @@ div.csv-importer {
     height: 20px;
   }
 }
-
