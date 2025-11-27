@@ -14,16 +14,16 @@ Open-source CSV, TSV, and XLS/XLSX file importer for Angular.
 ## Installation
 
 ```bash
-npm install csv-import-angular
+npm install @solidxepert/csv-import-angular
 # or
-yarn add csv-import-angular
+yarn add @solidxepert/csv-import-angular
 ```
 
 ## Quick Start
 
 ```typescript
 import { Component } from '@angular/core';
-import { CsvImporterComponent, Template, ImportResult } from 'csv-import-angular';
+import { CsvImporterComponent, Template, ImportResult } from '@solidxepert/csv-import-angular';
 
 @Component({
   selector: 'app-root',
@@ -165,6 +165,40 @@ const customStyles = {
   [customStyles]="customStyles"
 ></csv-importer>
 ```
+
+## Publishing
+
+This package is automatically published to npm when a new version tag is pushed.
+
+### Publishing a new version:
+
+1. Update the version in `package.json`:
+   ```bash
+   npm version patch  # for bug fixes (1.0.0 -> 1.0.1)
+   npm version minor  # for new features (1.0.0 -> 1.1.0)
+   npm version major  # for breaking changes (1.0.0 -> 2.0.0)
+   ```
+
+2. Push the version commit and tag:
+   ```bash
+   git push && git push --tags
+   ```
+
+3. The GitHub Actions workflow will automatically:
+   - Build the library
+   - Publish to npm as `@solidxepert/csv-import-angular`
+   - Create a GitHub release
+
+### Manual publishing:
+
+You can also trigger the workflow manually from the GitHub Actions tab, or publish directly:
+
+```bash
+npm run build
+npm publish
+```
+
+**Note**: You need to set up `NPM_TOKEN` secret in your GitHub repository settings for automatic publishing to work.
 
 ## License
 

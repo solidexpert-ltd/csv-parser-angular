@@ -1,8 +1,24 @@
 {
-  "name": "csv-import-angular",
+  "name": "@solidxepert/csv-import-angular",
   "version": "1.0.0",
   "description": "Open-source CSV, TSV, and XLS/XLSX file importer for Angular",
-  "main": "src/public-api.ts",
+  "main": "dist/fesm2022/csv-import-angular.mjs",
+  "module": "dist/fesm2022/csv-import-angular.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "esm2022": "./dist/fesm2022/csv-import-angular.mjs",
+      "esm": "./dist/fesm2022/csv-import-angular.mjs",
+      "default": "./dist/fesm2022/csv-import-angular.mjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "peerDependencies": {
     "@angular/common": ">=17.0.0",
     "@angular/core": ">=17.0.0",
@@ -13,6 +29,10 @@
     "papaparse": "^5.4.1",
     "tslib": "^2.6.0",
     "xlsx": "^0.18.5"
+  },
+  "scripts": {
+    "build": "ng-packagr -p ng-package.json",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@angular/common": "^17.3.0",
@@ -36,11 +56,15 @@
     "angular",
     "csv-import"
   ],
-  "author": "TableFlow",
+  "author": "Solidexpert LTD",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tableflowhq/csv-import.git"
-  }
+    "url": "git+https://github.com/solidexpert-ltd/csv-parser-angular.git"
+  },
+  "bugs": {
+    "url": "https://github.com/solidexpert-ltd/csv-parser-angular/issues"
+  },
+  "homepage": "https://github.com/solidexpert-ltd/csv-parser-angular#readme"
 }
 

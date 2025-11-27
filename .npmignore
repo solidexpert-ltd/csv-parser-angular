@@ -1,0 +1,42 @@
+# Source files
+src/
+demo/
+*.ts
+!*.d.ts
+
+# Build artifacts
+.angular/
+node_modules/
+dist/
+
+# Development files
+.vscode/
+.idea/
+*.log
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+.github/
+
+# Documentation
+*.md
+!README.md
+
+# Config files
+tsconfig.json
+tsconfig.*.json
+angular.json
+.editorconfig
+
+# Test files
+*.spec.ts
+*.test.ts
+e2e/
+coverage/
+
+# Sample data
+sample-data.csv
+
