@@ -77,32 +77,66 @@ jobs:
           fi
           echo "✓ Version match confirmed: $PACKAGE_VERSION"
 
+      - name: Prepare version for publishing
+        id: version_info
+        run: |
+          BASE_VERSION=$(node -p "require('./package.json').version")
+          BUILD_NUMBER=${{ github.run_number }}
+          
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            # For tags, use the base version and publish to 'latest'
+            PUBLISH_VERSION="$BASE_VERSION"
+            PUBLISH_TAG="latest"
+            echo "is_release=true" >> $GITHUB_OUTPUT
+          else
+            # For regular builds, append build number and publish to 'build' tag
+            PUBLISH_VERSION="${BASE_VERSION}-build.${BUILD_NUMBER}"
+            PUBLISH_TAG="build"
+            echo "is_release=false" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "version=$PUBLISH_VERSION" >> $GITHUB_OUTPUT
+          echo "tag=$PUBLISH_TAG" >> $GITHUB_OUTPUT
+          echo "base_version=$BASE_VERSION" >> $GITHUB_OUTPUT
+          echo "Publishing version: $PUBLISH_VERSION with tag: $PUBLISH_TAG"
+
+      - name: Update package.json version for build
+        if: steps.version_info.outputs.is_release == 'false'
+        run: |
+          npm version ${{ steps.version_info.outputs.version }} --no-git-tag-version
+          echo "Updated package.json version to ${{ steps.version_info.outputs.version }}"
+
       - name: Publish to npm
-        if: steps.is_tag.outputs.is_tag == 'true' || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
-        run: npm publish
+        run: |
+          npm publish --tag ${{ steps.version_info.outputs.tag }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Build summary
-        if: steps.is_tag.outputs.is_tag == 'false'
+      - name: Restore package.json version
+        if: steps.version_info.outputs.is_release == 'false'
         run: |
-          echo "## ✅ Build Complete" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Build Number**: ${{ steps.build_info.outputs.build_number }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Build ID**: ${{ steps.build_info.outputs.build_id }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Version**: $(node -p "require('./package.json').version")" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "💡 To publish to npm, create a version tag: \`git tag v1.0.0 && git push --tags\`" >> $GITHUB_STEP_SUMMARY
+          npm version ${{ steps.version_info.outputs.base_version }} --no-git-tag-version
+          echo "Restored package.json version to ${{ steps.version_info.outputs.base_version }}"
 
       - name: Publish summary
-        if: steps.is_tag.outputs.is_tag == 'true' || github.event_name == 'release'
         run: |
           echo "## 📦 Published to npm" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- **Package**: @solidxepert/csv-import-angular" >> $GITHUB_STEP_SUMMARY
-          echo "- **Version**: $(node -p "require('./package.json').version")" >> $GITHUB_STEP_SUMMARY
+          echo "- **Published Version**: ${{ steps.version_info.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Base Version**: ${{ steps.version_info.outputs.base_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **NPM Tag**: ${{ steps.version_info.outputs.tag }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Build Number**: ${{ steps.build_info.outputs.build_number }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Build ID**: ${{ steps.build_info.outputs.build_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [[ "${{ steps.version_info.outputs.is_release }}" == "true" ]]; then
+            echo "✅ Published as **latest** release" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ Published as **build** pre-release" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Install with: \`npm install @solidxepert/csv-import-angular@build\`" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
           echo "- **Registry**: https://www.npmjs.com/package/@solidxepert/csv-import-angular" >> $GITHUB_STEP_SUMMARY
