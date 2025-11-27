@@ -1,0 +1,46 @@
+{
+  "name": "csv-import-angular",
+  "version": "1.0.0",
+  "description": "Open-source CSV, TSV, and XLS/XLSX file importer for Angular",
+  "main": "src/public-api.ts",
+  "peerDependencies": {
+    "@angular/common": ">=17.0.0",
+    "@angular/core": ">=17.0.0",
+    "@angular/forms": ">=17.0.0",
+    "rxjs": ">=7.0.0"
+  },
+  "dependencies": {
+    "papaparse": "^5.4.1",
+    "tslib": "^2.6.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@angular/common": "^17.3.0",
+    "@angular/core": "^17.3.0",
+    "@angular/forms": "^17.3.0",
+    "@angular/cli": "^17.3.0",
+    "@angular/compiler": "^17.3.0",
+    "@angular/compiler-cli": "^17.3.0",
+    "@types/papaparse": "^5.3.14",
+    "ng-packagr": "^17.3.0",
+    "rxjs": "^7.8.0",
+    "typescript": "~5.4.0",
+    "zone.js": "~0.14.0"
+  },
+  "keywords": [
+    "csv",
+    "import",
+    "excel",
+    "data",
+    "importer",
+    "angular",
+    "csv-import"
+  ],
+  "author": "TableFlow",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tableflowhq/csv-import.git"
+  }
+}
+

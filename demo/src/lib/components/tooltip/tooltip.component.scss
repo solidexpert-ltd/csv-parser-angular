@@ -1,0 +1,56 @@
+.tooltip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--m-xxxxs);
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+  color: var(--color-text-soft);
+  transition: var(--transition-ui);
+
+  &:hover {
+    color: var(--color-primary);
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.message {
+  position: fixed;
+  z-index: 9999;
+  transform: translateX(-50%);
+  margin-top: 8px;
+  padding: var(--m-xxs) var(--m-xs);
+  background: var(--color-text);
+  color: var(--color-background);
+  font-size: var(--font-size-xs);
+  border-radius: var(--border-radius-1);
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 4px solid var(--color-text);
+  }
+}
+
+.multiline .message {
+  white-space: normal;
+  max-width: 250px;
+  text-align: center;
+}
+

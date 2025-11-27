@@ -1,0 +1,76 @@
+.stepper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--m-xs);
+  padding: var(--m-s) var(--m);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: var(--m-xxs);
+  padding: var(--m-xxs) var(--m-xs);
+  border-radius: var(--border-radius-2);
+  background: transparent;
+  border: none;
+  cursor: default;
+  color: var(--color-text-soft);
+  font-size: var(--font-size-s);
+  transition: var(--transition-ui);
+
+  &.step-wide {
+    padding: var(--m-xxs) var(--m-s);
+  }
+
+  &.active {
+    color: var(--color-text);
+    
+    .badge {
+      background: var(--color-primary);
+      color: var(--color-text-on-primary);
+    }
+  }
+
+  &.done {
+    color: var(--color-text);
+    
+    .badge {
+      background: var(--color-stepper-active);
+      color: var(--color-primary);
+    }
+  }
+}
+
+button.step {
+  cursor: pointer;
+
+  &:hover {
+    background: var(--color-background-modal-hover);
+  }
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-stepper);
+  color: var(--color-text);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.label {
+  font-weight: 500;
+  white-space: nowrap;
+}
+

@@ -1,0 +1,123 @@
+.select-container {
+  position: relative;
+  width: 100%;
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  &.small {
+    .select-input {
+      padding: var(--m-xxxs) var(--m-xs);
+      font-size: var(--font-size-s);
+    }
+  }
+}
+
+.select-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--m-xs);
+  padding: var(--m-xxs) var(--m-xs);
+  background: var(--color-input-background);
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--border-radius-1);
+  cursor: pointer;
+  transition: var(--transition-ui);
+
+  &:hover {
+    border-color: var(--color-primary);
+  }
+
+  &.open {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(122, 94, 248, 0.2);
+  }
+}
+
+.value {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-text);
+
+  &.placeholder {
+    color: var(--color-input-placeholder);
+  }
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  color: var(--color-text-soft);
+
+  svg {
+    transition: transform var(--fast) var(--ease);
+  }
+}
+
+.select-input.open .dropdown-icon svg {
+  transform: rotate(180deg);
+}
+
+.options {
+  position: fixed;
+  z-index: 9999;
+  background: var(--color-background-menu);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--m-xxs);
+  padding: var(--m-xxs) var(--m-xs);
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  color: var(--color-text);
+  font-size: var(--font-size);
+  transition: var(--transition-ui);
+
+  &:hover {
+    background: var(--color-background-menu-hover);
+  }
+
+  &.selected {
+    background: var(--color-primary);
+    color: var(--color-text-on-primary);
+  }
+
+  &.placeholder {
+    color: var(--color-text-soft);
+    font-style: italic;
+  }
+}
+
+.required-mark {
+  color: var(--color-text-error);
+  font-weight: 600;
+}
+
+.multiple-mark {
+  font-size: var(--font-size-xs);
+  padding: 2px 6px;
+  background: var(--color-primary);
+  color: var(--color-text-on-primary);
+  border-radius: var(--border-radius-1);
+  margin-left: auto;
+}
+
