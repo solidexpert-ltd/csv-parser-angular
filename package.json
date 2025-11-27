@@ -2,17 +2,6 @@
   "name": "@solidxepert/csv-import-angular",
   "version": "1.0.0",
   "description": "Open-source CSV, TSV, and XLS/XLSX file importer for Angular",
-  "main": "dist/fesm2022/csv-import-angular.mjs",
-  "module": "dist/fesm2022/csv-import-angular.mjs",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "esm2022": "./dist/fesm2022/csv-import-angular.mjs",
-      "esm": "./dist/fesm2022/csv-import-angular.mjs",
-      "default": "./dist/fesm2022/csv-import-angular.mjs"
-    }
-  },
   "files": [
     "dist"
   ],
