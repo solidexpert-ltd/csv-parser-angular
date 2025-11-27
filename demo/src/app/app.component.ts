@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CsvImporterComponent } from '../lib/csv-importer/csv-importer.component';
+import { CsvImporterComponent } from '@solidexpert/csv-importer-angular';
 
 interface Template {
   columns: {
