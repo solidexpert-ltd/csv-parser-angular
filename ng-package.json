@@ -5,9 +5,16 @@
     "papaparse",
     "xlsx"
   ],
+  "assets": [
+    {
+      "input": "./src/lib/styles",
+      "glob": "**/*.scss",
+      "output": "/styles"
+    }
+  ],
   "lib": {
     "entryFile": "src/public-api.ts",
-    "styleIncludePaths": ["src/styles"]
+    "styleIncludePaths": ["src/lib/styles"]
   }
 }
 
