@@ -104,23 +104,35 @@ jobs:
           echo "angular_version=$ANGULAR_VERSION" >> $GITHUB_OUTPUT
           echo "Publishing version: $PUBLISH_VERSION with tag: $PUBLISH_TAG"
 
-      - name: Update package.json version for build
+      - name: Sync version to dist/package.json
+        run: |
+          ROOT_VERSION=$(node -p "require('./package.json').version")
+          cd dist
+          npm version $ROOT_VERSION --no-git-tag-version
+          echo "Synced dist/package.json version to $ROOT_VERSION"
+
+      - name: Update root and dist package.json version for build
         if: steps.version_info.outputs.is_release == 'false'
         run: |
           npm version ${{ steps.version_info.outputs.version }} --no-git-tag-version
-          echo "Updated package.json version to ${{ steps.version_info.outputs.version }}"
+          cd dist
+          npm version ${{ steps.version_info.outputs.version }} --no-git-tag-version
+          echo "Updated both package.json versions to ${{ steps.version_info.outputs.version }}"
 
-      - name: Publish to npm
+      - name: Publish to npm from dist
         run: |
+          cd dist
           npm publish --tag ${{ steps.version_info.outputs.tag }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Restore package.json version
+      - name: Restore root and dist package.json versions
         if: steps.version_info.outputs.is_release == 'false'
         run: |
           npm version ${{ steps.version_info.outputs.base_version }} --no-git-tag-version
-          echo "Restored package.json version to ${{ steps.version_info.outputs.base_version }}"
+          cd dist
+          npm version ${{ steps.version_info.outputs.base_version }} --no-git-tag-version
+          echo "Restored both package.json versions to ${{ steps.version_info.outputs.base_version }}"
 
       - name: Publish summary
         run: |

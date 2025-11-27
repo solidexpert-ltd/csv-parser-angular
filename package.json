@@ -2,9 +2,6 @@
   "name": "@solidexpert/csv-importer-angular",
   "version": "1.0.0",
   "description": "Open-source CSV, TSV, and XLS/XLSX file importer for Angular",
-  "files": [
-    "dist"
-  ],
   "publishConfig": {
     "access": "public"
   },
