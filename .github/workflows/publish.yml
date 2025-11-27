@@ -108,15 +108,26 @@ jobs:
         run: |
           ROOT_VERSION=$(node -p "require('./package.json').version")
           cd dist
-          npm version $ROOT_VERSION --no-git-tag-version
-          echo "Synced dist/package.json version to $ROOT_VERSION"
+          DIST_VERSION=$(node -p "require('./package.json').version")
+          if [ "$ROOT_VERSION" != "$DIST_VERSION" ]; then
+            npm version $ROOT_VERSION --no-git-tag-version
+            echo "Synced dist/package.json version to $ROOT_VERSION"
+          else
+            echo "dist/package.json version already matches root version: $ROOT_VERSION"
+          fi
 
       - name: Update root and dist package.json version for build
         if: steps.version_info.outputs.is_release == 'false'
         run: |
-          npm version ${{ steps.version_info.outputs.version }} --no-git-tag-version
+          CURRENT_ROOT=$(node -p "require('./package.json').version")
+          if [ "$CURRENT_ROOT" != "${{ steps.version_info.outputs.version }}" ]; then
+            npm version ${{ steps.version_info.outputs.version }} --no-git-tag-version
+          fi
           cd dist
-          npm version ${{ steps.version_info.outputs.version }} --no-git-tag-version
+          CURRENT_DIST=$(node -p "require('./package.json').version")
+          if [ "$CURRENT_DIST" != "${{ steps.version_info.outputs.version }}" ]; then
+            npm version ${{ steps.version_info.outputs.version }} --no-git-tag-version
+          fi
           echo "Updated both package.json versions to ${{ steps.version_info.outputs.version }}"
 
       - name: Publish to npm from dist
@@ -129,9 +140,15 @@ jobs:
       - name: Restore root and dist package.json versions
         if: steps.version_info.outputs.is_release == 'false'
         run: |
-          npm version ${{ steps.version_info.outputs.base_version }} --no-git-tag-version
+          CURRENT_ROOT=$(node -p "require('./package.json').version")
+          if [ "$CURRENT_ROOT" != "${{ steps.version_info.outputs.base_version }}" ]; then
+            npm version ${{ steps.version_info.outputs.base_version }} --no-git-tag-version
+          fi
           cd dist
-          npm version ${{ steps.version_info.outputs.base_version }} --no-git-tag-version
+          CURRENT_DIST=$(node -p "require('./package.json').version")
+          if [ "$CURRENT_DIST" != "${{ steps.version_info.outputs.base_version }}" ]; then
+            npm version ${{ steps.version_info.outputs.base_version }} --no-git-tag-version
+          fi
           echo "Restored both package.json versions to ${{ steps.version_info.outputs.base_version }}"
 
       - name: Publish summary
