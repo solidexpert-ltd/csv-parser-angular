@@ -1,7 +1,10 @@
-name: Publish to npm
+name: Build and Publish
 
 on:
   push:
+    branches:
+      - main
+      - master
     tags:
       - 'v*.*.*'
   release:
@@ -30,16 +33,25 @@ jobs:
       - name: Build library
         run: npm run build
 
+      - name: Check if this is a tag push
+        id: is_tag
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            echo "is_tag=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_tag=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Extract version from tag
         id: get_version
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: steps.is_tag.outputs.is_tag == 'true'
         run: |
           VERSION=${GITHUB_REF#refs/tags/v}
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Version: $VERSION"
 
       - name: Verify package version matches tag
-        if: startsWith(github.ref, 'refs/tags/v')
+        if: steps.is_tag.outputs.is_tag == 'true'
         run: |
           PACKAGE_VERSION=$(node -p "require('./package.json').version")
           TAG_VERSION=${{ steps.get_version.outputs.version }}
@@ -50,11 +62,24 @@ jobs:
           echo "✓ Version match confirmed: $PACKAGE_VERSION"
 
       - name: Publish to npm
+        if: steps.is_tag.outputs.is_tag == 'true' || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Build summary
+        if: steps.is_tag.outputs.is_tag == 'false'
+        run: |
+          echo "## ✅ Build Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: $(node -p "require('./package.json').version")" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "💡 To publish to npm, create a version tag: \`git tag v1.0.0 && git push --tags\`" >> $GITHUB_STEP_SUMMARY
+
       - name: Publish summary
+        if: steps.is_tag.outputs.is_tag == 'true' || github.event_name == 'release'
         run: |
           echo "## 📦 Published to npm" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
