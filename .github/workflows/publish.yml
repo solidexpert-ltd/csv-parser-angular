@@ -89,8 +89,10 @@ jobs:
             PUBLISH_TAG="latest"
             echo "is_release=true" >> $GITHUB_OUTPUT
           else
-            # For regular builds, append build number and publish to 'build' tag
-            PUBLISH_VERSION="${BASE_VERSION}-build.${BUILD_NUMBER}"
+            # For regular builds, use 1.0.{run_number} format
+            # Extract major.minor from base version (e.g., 1.0.0 -> 1.0)
+            MAJOR_MINOR=$(echo "$BASE_VERSION" | sed 's/\.[0-9]*$//')
+            PUBLISH_VERSION="${MAJOR_MINOR}.${BUILD_NUMBER}"
             PUBLISH_TAG="build"
             echo "is_release=false" >> $GITHUB_OUTPUT
           fi
@@ -122,7 +124,7 @@ jobs:
         run: |
           echo "## 📦 Published to npm" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Package**: @solidxepert/csv-import-angular" >> $GITHUB_STEP_SUMMARY
+          echo "- **Package**: @solidexpert/csv-importer-angular" >> $GITHUB_STEP_SUMMARY
           echo "- **Published Version**: ${{ steps.version_info.outputs.version }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Base Version**: ${{ steps.version_info.outputs.base_version }}" >> $GITHUB_STEP_SUMMARY
           echo "- **NPM Tag**: ${{ steps.version_info.outputs.tag }}" >> $GITHUB_STEP_SUMMARY
@@ -136,7 +138,7 @@ jobs:
           else
             echo "✅ Published as **build** pre-release" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "Install with: \`npm install @solidxepert/csv-import-angular@build\`" >> $GITHUB_STEP_SUMMARY
+            echo "Install with: \`npm install @solidexpert/csv-importer-angular@build\`" >> $GITHUB_STEP_SUMMARY
           fi
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Registry**: https://www.npmjs.com/package/@solidxepert/csv-import-angular" >> $GITHUB_STEP_SUMMARY
+          echo "- **Registry**: https://www.npmjs.com/package/@solidexpert/csv-importer-angular" >> $GITHUB_STEP_SUMMARY

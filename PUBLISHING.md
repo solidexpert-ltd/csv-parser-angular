@@ -1,6 +1,6 @@
 # Publishing Guide
 
-This guide explains how to publish `@solidxepert/csv-import-angular` to npm using GitHub Actions.
+This guide explains how to publish `@solidexpert/csv-importer-angular` to npm using GitHub Actions.
 
 ## Prerequisites
 
@@ -31,7 +31,7 @@ This guide explains how to publish `@solidxepert/csv-import-angular` to npm usin
 Ensure `package.json` has the correct package name:
 ```json
 {
-  "name": "@solidxepert/csv-import-angular",
+  "name": "@solidexpert/csv-importer-angular",
   "publishConfig": {
     "access": "public"
   }
@@ -100,10 +100,10 @@ The GitHub Actions workflow (`.github/workflows/publish.yml`) will:
 
 After publishing, verify the package:
 
-1. Check npm: https://www.npmjs.com/package/@solidxepert/csv-import-angular
+1. Check npm: https://www.npmjs.com/package/@solidexpert/csv-importer-angular
 2. Test installation:
    ```bash
-   npm install @solidxepert/csv-import-angular@latest
+   npm install @solidexpert/csv-importer-angular@latest
    ```
 
 ## Troubleshooting

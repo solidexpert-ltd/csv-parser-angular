@@ -14,16 +14,16 @@ Open-source CSV, TSV, and XLS/XLSX file importer for Angular.
 ## Installation
 
 ```bash
-npm install @solidxepert/csv-import-angular
+npm install @solidexpert/csv-importer-angular
 # or
-yarn add @solidxepert/csv-import-angular
+yarn add @solidexpert/csv-importer-angular
 ```
 
 ## Quick Start
 
 ```typescript
 import { Component } from '@angular/core';
-import { CsvImporterComponent, Template, ImportResult } from '@solidxepert/csv-import-angular';
+import { CsvImporterComponent, Template, ImportResult } from '@solidexpert/csv-importer-angular';
 
 @Component({
   selector: 'app-root',
@@ -186,7 +186,7 @@ This package is automatically published to npm when a new version tag is pushed.
 
 3. The GitHub Actions workflow will automatically:
    - Build the library
-   - Publish to npm as `@solidxepert/csv-import-angular`
+   - Publish to npm as `@solidexpert/csv-importer-angular`
    - Create a GitHub release
 
 ### Manual publishing:
