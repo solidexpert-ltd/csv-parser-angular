@@ -10,6 +10,11 @@
       "input": "./src/lib/styles",
       "glob": "**/*.scss",
       "output": "/styles"
+    },
+    {
+      "input": "./src/lib",
+      "glob": "**/*.component.scss",
+      "output": "/lib"
     }
   ],
   "lib": {
