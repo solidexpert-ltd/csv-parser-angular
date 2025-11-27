@@ -83,16 +83,17 @@ jobs:
           BASE_VERSION=$(node -p "require('./package.json').version")
           BUILD_NUMBER=${{ github.run_number }}
           
+          # Extract Angular major version from @angular/core dependency
+          ANGULAR_VERSION=$(node -p "require('./package.json').devDependencies['@angular/core']" | sed 's/\^//' | sed 's/~//' | cut -d'.' -f1)
+          
           if [[ "${{ github.ref }}" == refs/tags/* ]]; then
             # For tags, use the base version and publish to 'latest'
             PUBLISH_VERSION="$BASE_VERSION"
             PUBLISH_TAG="latest"
             echo "is_release=true" >> $GITHUB_OUTPUT
           else
-            # For regular builds, use 1.0.{run_number} format
-            # Extract major.minor from base version (e.g., 1.0.0 -> 1.0)
-            MAJOR_MINOR=$(echo "$BASE_VERSION" | sed 's/\.[0-9]*$//')
-            PUBLISH_VERSION="${MAJOR_MINOR}.${BUILD_NUMBER}"
+            # For regular builds, use {angular_version}.0.{run_number} format
+            PUBLISH_VERSION="${ANGULAR_VERSION}.0.${BUILD_NUMBER}"
             PUBLISH_TAG="build"
             echo "is_release=false" >> $GITHUB_OUTPUT
           fi
@@ -100,6 +101,7 @@ jobs:
           echo "version=$PUBLISH_VERSION" >> $GITHUB_OUTPUT
           echo "tag=$PUBLISH_TAG" >> $GITHUB_OUTPUT
           echo "base_version=$BASE_VERSION" >> $GITHUB_OUTPUT
+          echo "angular_version=$ANGULAR_VERSION" >> $GITHUB_OUTPUT
           echo "Publishing version: $PUBLISH_VERSION with tag: $PUBLISH_TAG"
 
       - name: Update package.json version for build
@@ -127,6 +129,7 @@ jobs:
           echo "- **Package**: @solidexpert/csv-importer-angular" >> $GITHUB_STEP_SUMMARY
           echo "- **Published Version**: ${{ steps.version_info.outputs.version }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Base Version**: ${{ steps.version_info.outputs.base_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Angular Version**: ${{ steps.version_info.outputs.angular_version }}" >> $GITHUB_STEP_SUMMARY
           echo "- **NPM Tag**: ${{ steps.version_info.outputs.tag }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Build Number**: ${{ steps.build_info.outputs.build_number }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Build ID**: ${{ steps.build_info.outputs.build_id }}" >> $GITHUB_STEP_SUMMARY
