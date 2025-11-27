@@ -27,11 +27,27 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Set build number
+        id: build_info
+        run: |
+          BUILD_NUMBER=${{ github.run_number }}
+          BUILD_ID=${{ github.run_id }}
+          echo "build_number=$BUILD_NUMBER" >> $GITHUB_OUTPUT
+          echo "build_id=$BUILD_ID" >> $GITHUB_OUTPUT
+          echo "Build Number: $BUILD_NUMBER"
+          echo "Build ID: $BUILD_ID"
+
       - name: Install dependencies
         run: npm ci
 
       - name: Build library
-        run: npm run build
+        env:
+          BUILD_NUMBER: ${{ github.run_number }}
+          BUILD_ID: ${{ github.run_id }}
+        run: |
+          echo "🔨 Building library (Build #${{ github.run_number }})..."
+          npm run build
+          echo "✅ Build completed successfully (Build #${{ github.run_number }})"
 
       - name: Check if this is a tag push
         id: is_tag
@@ -72,6 +88,8 @@ jobs:
         run: |
           echo "## ✅ Build Complete" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Build Number**: ${{ steps.build_info.outputs.build_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Build ID**: ${{ steps.build_info.outputs.build_id }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Version**: $(node -p "require('./package.json').version")" >> $GITHUB_STEP_SUMMARY
@@ -85,4 +103,6 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- **Package**: @solidxepert/csv-import-angular" >> $GITHUB_STEP_SUMMARY
           echo "- **Version**: $(node -p "require('./package.json').version")" >> $GITHUB_STEP_SUMMARY
+          echo "- **Build Number**: ${{ steps.build_info.outputs.build_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Build ID**: ${{ steps.build_info.outputs.build_id }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Registry**: https://www.npmjs.com/package/@solidxepert/csv-import-angular" >> $GITHUB_STEP_SUMMARY
