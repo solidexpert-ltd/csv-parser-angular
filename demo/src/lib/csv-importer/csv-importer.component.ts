@@ -30,18 +30,20 @@ import { CompleteComponent } from '../features/complete/complete.component';
   ],
   template: `
     @if (isModal) {
-      <div class="csvImporter">
-        <dialog 
-          #dialogRef
-          class="csv-importer"
-          [class.CSVImporter-dark]="darkMode"
-          [class.CSVImporter-light]="!darkMode"
-          [attr.data-theme]="darkMode ? 'dark' : 'light'"
-          (click)="onBackdropClick($event)"
-        >
-          <ng-container *ngTemplateOutlet="importerContent"></ng-container>
-        </dialog>
-      </div>
+      @if (modalIsOpen) {
+        <div class="csvImporter">
+          <dialog 
+            #dialogRef
+            class="csv-importer"
+            [class.CSVImporter-dark]="darkMode"
+            [class.CSVImporter-light]="!darkMode"
+            [attr.data-theme]="darkMode ? 'dark' : 'light'"
+            (click)="onBackdropClick($event)"
+          >
+            <ng-container *ngTemplateOutlet="importerContent"></ng-container>
+          </dialog>
+        </div>
+      }
     } @else {
       <div 
         class="csv-importer"
@@ -194,8 +196,13 @@ export class CsvImporterComponent implements OnInit, OnChanges, AfterViewInit {
     }
 
     if (changes['modalIsOpen'] && this.isModal) {
-      // Update dialog state when modalIsOpen changes
-      this.updateDialogState();
+      // When modalIsOpen becomes true, dialog will be created via *ngIf
+      // Wait for next change detection cycle to ensure dialog exists
+      if (this.modalIsOpen) {
+        setTimeout(() => {
+          this.updateDialogState();
+        }, 0);
+      }
     }
 
     if (changes['customTranslations'] && this.customTranslations) {
@@ -206,23 +213,21 @@ export class CsvImporterComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Ensure dialog is opened/closed based on modalIsOpen state
-    this.updateDialogState();
+    // If modal is open on init, ensure dialog is shown
+    if (this.isModal && this.modalIsOpen) {
+      this.updateDialogState();
+    }
   }
 
   private updateDialogState(): void {
-    if (!this.isModal || !this.dialogRef) {
+    if (!this.isModal || !this.modalIsOpen || !this.dialogRef) {
       return;
     }
 
     // Use requestAnimationFrame to ensure DOM is ready
     requestAnimationFrame(() => {
-      if (this.dialogRef) {
-        if (this.modalIsOpen) {
-          this.dialogRef.nativeElement.showModal();
-        } else {
-          this.dialogRef.nativeElement.close();
-        }
+      if (this.dialogRef && this.modalIsOpen) {
+        this.dialogRef.nativeElement.showModal();
       }
     });
   }

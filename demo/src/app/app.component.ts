@@ -371,6 +371,7 @@ export class AppComponent {
   };
 
   openModal(): void {
+    console.log('openModal');
     this.isOpen = true;
   }
 
