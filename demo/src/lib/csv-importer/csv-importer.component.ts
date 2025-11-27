@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnInit, OnChanges, SimpleChanges, ElementRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, OnChanges, SimpleChanges, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import * as Papa from 'papaparse';
 import * as XLSX from 'xlsx';
@@ -129,9 +129,9 @@ import { CompleteComponent } from '../features/complete/complete.component';
   `,
   styleUrl: './csv-importer.component.scss'
 })
-export class CsvImporterComponent implements OnInit, OnChanges {
+export class CsvImporterComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() isModal: boolean = true;
-  @Input() modalIsOpen: boolean = true;
+  @Input() modalIsOpen: boolean = false;
   @Input() modalCloseOnOutsideClick: boolean = false;
   @Input() template?: Template | string;
   @Input() darkMode: boolean = false;
@@ -193,12 +193,9 @@ export class CsvImporterComponent implements OnInit, OnChanges {
       this.applyPrimaryColor();
     }
 
-    if (changes['modalIsOpen'] && this.isModal && this.dialogRef) {
-      if (this.modalIsOpen) {
-        this.dialogRef.nativeElement.showModal();
-      } else {
-        this.dialogRef.nativeElement.close();
-      }
+    if (changes['modalIsOpen'] && this.isModal) {
+      // Update dialog state when modalIsOpen changes
+      this.updateDialogState();
     }
 
     if (changes['customTranslations'] && this.customTranslations) {
@@ -209,9 +206,25 @@ export class CsvImporterComponent implements OnInit, OnChanges {
   }
 
   ngAfterViewInit(): void {
-    if (this.isModal && this.modalIsOpen && this.dialogRef) {
-      this.dialogRef.nativeElement.showModal();
+    // Ensure dialog is opened/closed based on modalIsOpen state
+    this.updateDialogState();
+  }
+
+  private updateDialogState(): void {
+    if (!this.isModal || !this.dialogRef) {
+      return;
     }
+
+    // Use requestAnimationFrame to ensure DOM is ready
+    requestAnimationFrame(() => {
+      if (this.dialogRef) {
+        if (this.modalIsOpen) {
+          this.dialogRef.nativeElement.showModal();
+        } else {
+          this.dialogRef.nativeElement.close();
+        }
+      }
+    });
   }
 
   private initializeLanguage(): void {
