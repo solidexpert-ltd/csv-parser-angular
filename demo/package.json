@@ -17,7 +17,7 @@
     "@angular/platform-browser": "~19.0.0",
     "@angular/platform-browser-dynamic": "~19.0.0",
     "@angular/router": "~19.0.0",
-    "@solidexpert/csv-importer-angular": "file:../dist",
+    "@solidexpert/csv-importer-angular": "19.0.14",
     "papaparse": "^5.4.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.6.0",

@@ -11,6 +11,24 @@ Open-source CSV, TSV, and XLS/XLSX file importer for Angular.
 - ✅ **Column mapping**: Smart column matching with suggested mappings
 - 🔧 **Customizable**: Custom styles, templates, and validation
 
+## Screenshots
+
+![White theme preview showing the importer modal](Screenshot%200.png)
+
+An overall view of the importer running in the default white theme, highlighting the modern modal layout and primary actions.
+
+![Step one - upload](Screenshot%201.png)
+
+**Step 1 — Upload & template selection:** Drag a file into the drop zone or browse from disk, then choose or confirm the correct template before moving on.
+
+![Step two - mapping](Screenshot%202.png)
+
+**Step 2 — Column mapping:** Quickly map source columns to your template keys. Suggested matches accelerate the process and required fields are clearly flagged.
+
+![Step three - review](Screenshot%203.png)
+
+**Step 3 — Review & completion:** Inspect the parsed rows, validate errors, and finish the import once everything looks good.
+
 ## Installation
 
 ```bash
