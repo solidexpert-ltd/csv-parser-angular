@@ -31,17 +31,17 @@ jobs:
       - name: Cache npm dependencies
         uses: actions/cache@v4
         with:
-          path: csv-import-angular/demo/node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('csv-import-angular/demo/package-lock.json') }}
+          path: demo/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('demo/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
       - name: Install dependencies
-        working-directory: csv-import-angular/demo
+        working-directory: demo
         run: npm ci
 
       - name: Build demo
-        working-directory: csv-import-angular/demo
+        working-directory: demo
         run: npm run build:github-pages
 
       - name: Setup Pages
@@ -50,7 +50,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: csv-import-angular/demo/dist/demo/browser
+          path: demo/dist/demo/browser
 
   deploy:
     environment:
