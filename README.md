@@ -29,6 +29,21 @@ An overall view of the importer running in the default white theme, highlighting
 
 **Step 3 — Review & completion:** Inspect the parsed rows, validate errors, and finish the import once everything looks good.
 
+## Live Demo
+
+Try the CSV importer in action! The demo application is available on GitHub Pages:
+
+🌐 **[View Live Demo](https://solidexpert-ltd.github.io/csv-parser-angular/)**
+
+The demo showcases all features including:
+- File upload (CSV, TSV, XLS, XLSX)
+- Column mapping with smart suggestions
+- Row selection and validation
+- Light and dark themes
+- Multi-language support
+
+The demo is automatically deployed to GitHub Pages on every push to the main branch.
+
 ## Installation
 
 ```bash
