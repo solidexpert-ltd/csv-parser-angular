@@ -11,6 +11,12 @@ Open-source CSV, TSV, and XLS/XLSX file importer for Angular.
 - ✅ **Column mapping**: Smart column matching with suggested mappings
 - 🔧 **Customizable**: Custom styles, templates, and validation
 
+## Live Demo
+
+Try the CSV importer in action! The demo application is available on GitHub Pages:
+
+🌐 **[View Live Demo](https://solidexpert-ltd.github.io/csv-parser-angular/)**
+
 ## Screenshots
 
 ![White theme preview showing the importer modal](Screenshot%200.png)
@@ -29,11 +35,7 @@ An overall view of the importer running in the default white theme, highlighting
 
 **Step 3 — Review & completion:** Inspect the parsed rows, validate errors, and finish the import once everything looks good.
 
-## Live Demo
 
-Try the CSV importer in action! The demo application is available on GitHub Pages:
-
-🌐 **[View Live Demo](https://solidexpert-ltd.github.io/csv-parser-angular/)**
 
 The demo showcases all features including:
 - File upload (CSV, TSV, XLS, XLSX)
