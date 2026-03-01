@@ -14,7 +14,10 @@ on:
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
-    
+    permissions:
+      contents: read
+      id-token: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -130,12 +133,12 @@ jobs:
           fi
           echo "Updated both package.json versions to ${{ steps.version_info.outputs.version }}"
 
+      # Requires the package to be configured as a trusted publisher on npmjs.com
+      # (Linking > GitHub Actions OIDC) before this step will succeed.
       - name: Publish to npm from dist
         run: |
           cd dist
-          npm publish --tag ${{ steps.version_info.outputs.tag }}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          npm publish --tag ${{ steps.version_info.outputs.tag }} --provenance
 
       - name: Restore root and dist package.json versions
         if: steps.version_info.outputs.is_release == 'false'
