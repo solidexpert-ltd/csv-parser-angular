@@ -133,9 +133,9 @@ jobs:
           fi
           echo "Updated both package.json versions to ${{ steps.version_info.outputs.version }}"
 
-      # Requires the package to be configured as a trusted publisher on npmjs.com
-      # (Linking > GitHub Actions OIDC) before this step will succeed.
       - name: Publish to npm from dist
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           cd dist
           npm publish --tag ${{ steps.version_info.outputs.tag }} --provenance
