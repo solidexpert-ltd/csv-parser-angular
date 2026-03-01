@@ -28,7 +28,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Set build number
         id: build_info
@@ -134,7 +133,7 @@ jobs:
           echo "Updated both package.json versions to ${{ steps.version_info.outputs.version }}"
 
       # Requires the package to be configured as a trusted publisher on npmjs.com
-      # (Linking > GitHub Actions OIDC) before this step will succeed.
+      # (Settings > Publishing > GitHub Actions OIDC) before this step will succeed.
       - name: Publish to npm from dist
         run: |
           cd dist
